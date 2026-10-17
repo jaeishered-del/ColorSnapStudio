@@ -1,3 +1,5 @@
+import pytest
+import sys
 import json
 from colorsnap.core.models import Palette, ColorEntry
 from colorsnap.services.storage import save_library, load_library
@@ -12,6 +14,7 @@ def test_exports(tmp_path):
         out=export_palette(pal,fmt,tmp_path/f"o.{fmt}"); assert needle in out.read_text()
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux-only test")
 def test_user_data_dir_respects_xdg_data_home(monkeypatch, tmp_path):
     from colorsnap.services.storage import user_data_dir
     monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path / "xdg-data"))
